@@ -2,19 +2,21 @@ import React, { Component } from 'react';
 import { withGoogleMap, GoogleMap, Polyline } from 'react-google-maps';
 import {Fetches} from '../APIs/fetches'
 class Map extends Component {
+  state = {
+    regions : []
+  }
   componentDidMount() {
 
     fetch('http://localhost:3000/regions')
     .then(res => res.json())
     .then((resJson) => {
-        console.log(resJson)
+        this.setState({
+          regions: resJson
+          }, ()=>console.log(this.state)
+        )
       })
     }
-
-        // then((response) => response.json())
-        // .then((responseJson) => {
-        //     console.log(responseJson);
-        // })
+    
   render() {
 
     let pathCoordinates = [{lat:40.7831, lng: -73.9712},
