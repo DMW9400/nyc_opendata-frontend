@@ -15,8 +15,8 @@ class Map extends Component {
     .then((resJson) => {
         this.setState({
           regions: resJson
-        }, () => this.convertHash()
-        // , ()=>console.log(this.state.regions[31].geoJSON)
+        }
+        , () => this.convertHash()
         )
       })
     }
@@ -29,22 +29,24 @@ class Map extends Component {
 
 
       console.log('geoJ: ', jObject.geometry.coordinates[0][0][0])
-      jObject.geometry.coordinates[0]
+      let coordArr = []
+      jObject.geometry.coordinates[0][0].map(coordinate => coordArr.push({lat:coordinate[0], lng:coordinate[1]}))
+      console.log('coordArr:', coordArr[0])
+
+      return coordArr
 
     }
 
   render() {
-
-
-
+    console.log('convertHash', ()=>this.convertHash())
     let pathCoordinates = [{lat: 37.772, lng: -122.214},
           {lat: 21.291, lng: -157.821},
           {lat: -18.142, lng: 178.431},
           {lat: -27.467, lng: 153.027}]
     const GoogleMapExample = withGoogleMap(props => (
       <GoogleMap
-        defaultCenter = {  {lat: 0, lng: -180} }
-        defaultZoom = { 13 }
+        defaultCenter = {  {lat: 40.758896, lng: -73.985130} }
+        defaultZoom = { 12 }
         >
           <Polyline
             path={pathCoordinates}
