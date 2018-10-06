@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { withGoogleMap, GoogleMap, Polyline } from 'react-google-maps';
+import { withGoogleMap, GoogleMap, Polyline, Polygon } from 'react-google-maps';
 
 class Map extends Component {
   state = {
@@ -13,38 +13,17 @@ class Map extends Component {
         this.setState({
           regions: resJson
         }
-        , () => this.convertHash()
         )
       })
     }
 
-    convertHash = () => {
-      let coordArr = []
-      if (this.state.regions){
-        let geoJ = this.state.regions[31].geoJSON
 
-        let jObject = JSON.parse(geoJ)
-
-
-        jObject.geometry.coordinates[0][0].map(coordinate => coordArr.push({lat:coordinate[1], lng:coordinate[0]}))
-
-        this.setState({latLong: coordArr})
-
-      }
-      return coordArr
-    }
 
     renderNames() {
       return (
         <h2>{this.state.regions.map(region =>  region.name)}</h2>
       )
-      // this.state.regions.map(region =>{
-      //
-      //   return (<h2>region.name</h2>)
-      // })
 
-
-      // return <h2>THIS HERE</h2>
     }
 
 
@@ -56,7 +35,7 @@ class Map extends Component {
           coordinates.map(coordinate => coordArr.push({lat:coordinate[1], lng:coordinate[0]} ))
           console.log('cord arr', coordArr)
           return (
-            <Polyline
+            <Polygon
             path={coordArr}
             options={{
               strokeColor: '#fc1e0d',
@@ -68,11 +47,8 @@ class Map extends Component {
                 repeat: '10px'
               }],
             }}
-            draggable = {true}
           />
         )
-
-          // console.log(region.geometry.coordinates[0][0])
         });
     }
 
