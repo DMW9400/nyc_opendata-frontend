@@ -3,6 +3,19 @@ import { withGoogleMap, GoogleMap, Polyline, Polygon } from 'react-google-maps';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 
+const selectStyle = {
+  width: '70%',
+  backgroundColor: '#B0BEC5',
+}
+const menuItem = {
+  color:'#263238',
+  backgroundColor:'#B0BEC5'
+}
+
+const textColor = {
+  color: '#795548'
+}
+
 class Map extends Component {
   state = {
     regions : [],
@@ -27,24 +40,15 @@ class Map extends Component {
       });
     }
 
-
-
-    renderNames() {
-      return (
-        <h2>{this.state.regions.map(region =>  region.name)}</h2>
-      )
-
-    }
-
-    menuItems (values) {
-      if (this.props.regions.length>0) {
-        return this.props.regions.map((instrument) => (
+    metricItems (values) {
+      if (this.state.metrics.length>0) {
+        return this.state.metrics.map((metric) => (
           <MenuItem
-            key={instrument.id}
+            key={metric.id}
             insetChildren={true}
-            checked={values && values.indexOf(instrument) > -1}
-            value={instrument}
-            primaryText={instrument.name}
+            checked={values && values.indexOf(metric) > -1}
+            value={metric}
+            primaryText={metric.name}
           >
           </MenuItem>
         ));
@@ -102,13 +106,28 @@ class Map extends Component {
           {this.renderRegions()}
         </GoogleMap>
       ));
+
+      const metrics = this.state.metrics
+
       return(
         <div>
           <GoogleMapExample
             containerElement={ <div style={{ height: `800px`, width: '900px'}} /> }
             mapElement={ <div style={{ height: `100%` }} /> }
           />
-          <SelectField>
+          <SelectField
+            name='metric select'
+            menuItemStyle = {menuItem}
+            labelStyle={textColor}
+            selectedMenuItemStyle={textColor}
+            style={selectStyle}
+            multiple={true}
+            hintText="Select an Instrument"
+            value={metrics}
+            onChange={this.handleSelectedInstrumentChange}>
+
+              {this.metricItems(metrics)}
+
           </SelectField>
 
         </div>
