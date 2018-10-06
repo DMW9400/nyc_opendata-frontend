@@ -1,20 +1,30 @@
 import React, { Component } from 'react';
 import { withGoogleMap, GoogleMap, Polyline, Polygon } from 'react-google-maps';
+import SelectField from 'material-ui/SelectField';
+import MenuItem from 'material-ui/MenuItem';
 
 class Map extends Component {
   state = {
     regions : [],
-    latLong: null
+    latLong: null,
+    metrics:[]
   }
   componentDidMount() {
     fetch('http://localhost:3000/regions')
-    .then(res => res.json())
-    .then((resJson) => {
+      .then(res => res.json())
+      .then((resJson) => {
         this.setState({
           regions: resJson
         }
         )
-      })
+        })
+    fetch('http://localhost:3000/metrics')
+      .then(res => res.json())
+      .then ((metJson) => {
+        this.setState({
+          metrics: metJson
+        })
+      });
     }
 
 
@@ -26,6 +36,20 @@ class Map extends Component {
 
     }
 
+    menuItems (values) {
+      if (this.props.regions.length>0) {
+        return this.props.regions.map((instrument) => (
+          <MenuItem
+            key={instrument.id}
+            insetChildren={true}
+            checked={values && values.indexOf(instrument) > -1}
+            value={instrument}
+            primaryText={instrument.name}
+          >
+          </MenuItem>
+        ));
+      }
+}
 
     renderRegions(){
         return this.state.regions.map(regionJ => {
@@ -33,7 +57,7 @@ class Map extends Component {
           let coordinates = region.geometry.coordinates[0][0]
           let coordArr = []
           coordinates.map(coordinate => coordArr.push({lat:coordinate[1], lng:coordinate[0]} ))
-          console.log('cord arr', coordArr)
+          // console.log('cord arr', coordArr)
           return (
             <Polygon
             path={coordArr}
@@ -53,6 +77,7 @@ class Map extends Component {
     }
 
   render() {
+    console.log(this.state)
     let pathCoordinates = this.state.latLong
     const GoogleMapExample = withGoogleMap(props => (
       <GoogleMap
@@ -83,7 +108,8 @@ class Map extends Component {
             containerElement={ <div style={{ height: `800px`, width: '900px'}} /> }
             mapElement={ <div style={{ height: `100%` }} /> }
           />
-          {this.renderNames()}
+          <SelectField>
+          </SelectField>
 
         </div>
       );
