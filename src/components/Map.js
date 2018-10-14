@@ -17,7 +17,6 @@ const textColor = {
 }
 
 class Map extends Component {
-
   state = {
     regions : [],
     latLong: null,
@@ -52,11 +51,6 @@ class Map extends Component {
           }
         });
       }
-      // this.setState(
-      //   {
-      //     metricNames: metricNames
-      //   }
-      // )
       return metricNames
     }
 
@@ -104,6 +98,8 @@ class Map extends Component {
                 strokeColor: '#fc1e0d',
                 strokeOpacity: 1,
                 strokeWeight: 2,
+                // fillColor: '#fc1e0d',
+                fillColor: ['RGB', 12,108,15],
                 icons: [{
                   icon: "hello",
                   offset: '0',
