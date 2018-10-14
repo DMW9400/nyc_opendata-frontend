@@ -54,6 +54,16 @@ class Map extends Component {
       return metricNames
     }
 
+
+    componentToHex(c) {
+      var hex = c.toString(16);
+      return hex.length == 1 ? "0" + hex : hex;
+    }
+
+    rgbToHex(r, g, b) {
+        return "#" + this.componentToHex(r) + this.componentToHex(g) + this.componentToHex(b);
+    }
+
     metricItems (values) {
       let metricNames = this.generateMetricNames()
       let metricID = -1
