@@ -98,8 +98,8 @@ class Map extends Component {
                 strokeColor: '#fc1e0d',
                 strokeOpacity: 1,
                 strokeWeight: 2,
-                // fillColor: '#fc1e0d',
-                fillColor: ['RGB', 12,108,15],
+                fillColor: '#fc1e0d',
+                // fillColor: ["RGB", 0.2, 0.4, 0.6],
                 icons: [{
                   icon: "hello",
                   offset: '0',
@@ -124,8 +124,9 @@ class Map extends Component {
       const metrics = this.state.metrics
 
       return(
-        <div>
+        <div position='fixed' text-align='center'>
           <GoogleMapExample
+            display='inline-block'
             containerElement={ <div style={{ height: `800px`, width: '900px'}} /> }
             mapElement={ <div style={{ height: `100%` }} /> }
           />
