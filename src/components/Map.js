@@ -33,6 +33,7 @@ class Map extends Component {
           regions: resJson
         })
       });
+
     fetch('http://localhost:3000/metrics')
       .then(res => res.json())
       .then ((metJson) => {
@@ -66,7 +67,7 @@ class Map extends Component {
 
     metricItems (values) {
       let metricNames = this.generateMetricNames()
-      let metricID = -1
+      let metricID = 0
 
       return metricNames.map((metric) => {
         metricID++
@@ -83,7 +84,7 @@ class Map extends Component {
     }
 
     handleMetricSelect = (event, index, clickedMetric) => {
-      // event.preventDefault()
+      event.preventDefault()
       this.setState(
         {
           selectedMetric: clickedMetric
@@ -109,7 +110,6 @@ class Map extends Component {
                 strokeOpacity: 1,
                 strokeWeight: 2,
                 fillColor: '#fc1e0d',
-                // fillColor: ["RGB", 0.2, 0.4, 0.6],
                 icons: [{
                   icon: "hello",
                   offset: '0',
@@ -149,7 +149,7 @@ class Map extends Component {
             multiple={false}
             hintText="Select a Metric"
             onChange={this.handleMetricSelect}
-            // value={metrics}
+            value={this.state.selectedMetric}
             >
               {this.metricItems()}
           </Select>
