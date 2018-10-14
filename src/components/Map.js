@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { withGoogleMap, GoogleMap, Polyline, Polygon } from 'react-google-maps';
-import SelectField from 'material-ui/SelectField';
+import { withGoogleMap, GoogleMap, Polygon } from 'react-google-maps';
+import Select from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 
 const selectStyle = {
@@ -22,6 +22,7 @@ class Map extends Component {
     regions : [],
     latLong: null,
     metrics:[],
+    metricNames:null,
     selectedMetric: null
   }
 
@@ -51,6 +52,11 @@ class Map extends Component {
           }
         });
       }
+      // this.setState(
+      //   {
+      //     metricNames: metricNames
+      //   }
+      // )
       return metricNames
     }
 
@@ -72,24 +78,37 @@ class Map extends Component {
       });
     }
 
+    handleMetricSelect = (event, index, clickedMetric) => {
+      // event.preventDefault()
+      this.setState(
+        {
+          selectedMetric: clickedMetric
+        }, ()=>console.log(this.state)
+      )
+
+    }
+
     renderRegions(){
+        let polyID = 0
         return this.state.regions.map (regionJ => {
           let region = JSON.parse(regionJ.geoJSON)
           let coordinates = region.geometry.coordinates[0][0]
           let coordArr = []
+          polyID++
           coordinates.map(coordinate => coordArr.push({lat:coordinate[1], lng:coordinate[0]} ))
           return (
             <Polygon
-            path={coordArr}
-            options={{
-              strokeColor: '#fc1e0d',
-              strokeOpacity: 1,
-              strokeWeight: 2,
-              icons: [{
-                icon: "hello",
-                offset: '0',
-                repeat: '10px'
-              }],
+              key={polyID}
+              path={coordArr}
+              options={{
+                strokeColor: '#fc1e0d',
+                strokeOpacity: 1,
+                strokeWeight: 2,
+                icons: [{
+                  icon: "hello",
+                  offset: '0',
+                  repeat: '10px'
+                }],
             }}
           />
         )
@@ -114,18 +133,19 @@ class Map extends Component {
             containerElement={ <div style={{ height: `800px`, width: '900px'}} /> }
             mapElement={ <div style={{ height: `100%` }} /> }
           />
-          <SelectField
-            name='metric select'
+          <Select
+            name='metricSelect'
             menuItemStyle = {menuItem}
             labelStyle={textColor}
             selectedMenuItemStyle={textColor}
             style={selectStyle}
+            multiple={false}
             hintText="Select a Metric"
+            onChange={this.handleMetricSelect}
+            // value={metrics}
             >
-
-              {this.metricItems(metrics)}
-
-          </SelectField>
+              {this.metricItems()}
+          </Select>
 
         </div>
       );
