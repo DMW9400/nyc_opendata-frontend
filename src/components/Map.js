@@ -67,7 +67,7 @@ class Map extends Component {
 
     metricItems (values) {
       let metricNames = this.generateMetricNames()
-      let metricID = 0
+      let metricID = -1
 
       return metricNames.map((metric) => {
         metricID++
@@ -79,12 +79,10 @@ class Map extends Component {
           primaryText={metric}
         >
         </MenuItem>
-
       });
     }
 
     handleMetricSelect = (event, index, clickedMetric) => {
-      event.preventDefault()
       this.setState(
         {
           selectedMetric: clickedMetric
